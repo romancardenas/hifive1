@@ -1,0 +1,37 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "example-interrupt",
+            "command": "cargo",
+            "args": [
+                "build",
+                "--features=board-redv",
+                "--example=interrupt"
+            ],
+            "problemMatcher": [
+                "$rustc"
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            }
+        },
+        {
+            "label": "example-hello",
+            "command": "cargo",
+            "args": [
+                "build",
+                "--features=board-redv",
+                "--example=hello_world"
+            ],
+            "problemMatcher": [
+                "$rustc"
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            }
+        },
+    ]
+}
