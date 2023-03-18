@@ -2,12 +2,12 @@
     "version": "2.0.0",
     "tasks": [
         {
-            "label": "example-interrupt",
+            "label": "example-hello",
             "command": "cargo",
             "args": [
                 "build",
                 "--features=board-redv",
-                "--example=interrupt"
+                "--example=hello_world"
             ],
             "problemMatcher": [
                 "$rustc"
@@ -18,12 +18,28 @@
             }
         },
         {
-            "label": "example-hello",
+            "label": "example-blink",
             "command": "cargo",
             "args": [
                 "build",
                 "--features=board-redv",
-                "--example=hello_world"
+                "--example=blink"
+            ],
+            "problemMatcher": [
+                "$rustc"
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            }
+        },
+        {
+            "label": "example-interrupt",
+            "command": "cargo",
+            "args": [
+                "build",
+                "--features=board-redv",
+                "--example=interrupt"
             ],
             "problemMatcher": [
                 "$rustc"
