@@ -1,5 +1,4 @@
 //! Board support crate for HiFive1 and LoFive boards
-
 #![deny(missing_docs)]
 #![no_std]
 
