@@ -20,22 +20,20 @@ use riscv_rt::entry;
 
 #[no_mangle]
 pub unsafe extern "C" fn MachineTimer() {
-    sprintln!("timer");
     let mut clint = CorePeripherals::steal().clint;
-    sprintln!("  (mtime = {})", clint.mtime.mtime());
+    sprintln!("timer (mtime = {})", clint.mtime.mtime());
     clint.mtimecmp.set_mtimecmp(clint.mtime.mtime() + 65536 / 2);
 }
 
 #[no_mangle]
 pub unsafe extern "C" fn MachineExternal() {
-    sprintln!("external");
     let mut plic = CorePeripherals::steal().plic;
     if let Some(intr) = plic.claim() {
         match intr {
             Interrupt::RTC => {
                 let rtc = Peripherals::steal().RTC;
                 let rtccmp = rtc.rtccmp.read().bits();
-                sprintln!("  (rtccmp = {})", rtccmp);
+                sprintln!("external RTC (rtccmp = {})", rtccmp);
                 rtc.rtccmp.write(|w| w.bits(rtccmp + 65536));
             }
             _ => panic!("unknown interrupt"),
@@ -91,7 +89,7 @@ fn main() -> ! {
         plic.interrupt_enable(Interrupt::RTC);
         plic.set_priority(Interrupt::RTC, Priority::P7);
         // Set PLIC threshold
-        plic.set_threshold(Priority::P1);
+        plic.set_threshold(Priority::P0);
     }
 
     // Configure RTC
@@ -103,9 +101,9 @@ fn main() -> ! {
 
     // activate interrupts
     unsafe {
-        mstatus::set_mie();
-        mie::set_mtimer();
         mie::set_mext();
+        mie::set_mtimer();
+        mstatus::set_mie();
         rtc.enable();
     };
 
