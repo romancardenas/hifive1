@@ -3,18 +3,13 @@
 
 extern crate panic_halt;
 
-use e310x_hal::e310x::Peripherals;
-use hifive1::{
-    hal::{
-        core::{
-            plic::{Interrupt, Priority},
-            CorePeripherals,
-        },
-        prelude::*,
-        DeviceResources,
-    },
-    pin, sprintln,
+use e310x_hal::{
+    core::CorePeripherals,
+    e310x::{Interrupt, Peripherals, Priority, PLIC},
+    prelude::*,
+    DeviceResources,
 };
+use hifive1::{pin, sprintln};
 use riscv::register::{mie, mstatus};
 use riscv_rt::entry;
 
@@ -27,8 +22,7 @@ pub unsafe extern "C" fn MachineTimer() {
 
 #[no_mangle]
 pub unsafe extern "C" fn MachineExternal() {
-    let mut plic = CorePeripherals::steal().plic;
-    if let Some(intr) = plic.claim() {
+    if let Some(intr) = PLIC::claim() {
         match intr {
             Interrupt::RTC => {
                 let rtc = Peripherals::steal().RTC;
@@ -38,7 +32,7 @@ pub unsafe extern "C" fn MachineExternal() {
             }
             _ => panic!("unknown interrupt"),
         }
-        plic.complete(intr);
+        PLIC::complete(intr);
     } else {
         panic!("machine external triggered erroneously");
     }
@@ -86,7 +80,7 @@ fn main() -> ! {
         // Reset PLIC
         plic.reset();
         // Activate RTC interrupts
-        plic.interrupt_enable(Interrupt::RTC);
+        plic.enable_interrupt(Interrupt::RTC);
         plic.set_priority(Interrupt::RTC, Priority::P7);
         // Set PLIC threshold
         plic.set_threshold(Priority::P0);
