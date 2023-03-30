@@ -23,21 +23,11 @@ pub unsafe fn MachineTimer() {
 
 #[no_mangle]
 #[allow(non_snake_case)]
-pub unsafe fn MachineExternal() {
-    if let Some(intr) = PLIC::claim() {
-        match intr {
-            Interrupt::RTC => {
-                let rtc = Peripherals::steal().RTC;
-                let rtccmp = rtc.rtccmp.read().bits();
-                sprintln!("external RTC (rtccmp = {})", rtccmp);
-                rtc.rtccmp.write(|w| w.bits(rtccmp + 65536));
-            }
-            _ => panic!("unknown interrupt"),
-        }
-        PLIC::complete(intr);
-    } else {
-        panic!("machine external triggered erroneously");
-    }
+pub unsafe fn RTC() {
+    let rtc = Peripherals::steal().RTC;
+    let rtccmp = rtc.rtccmp.read().bits();
+    sprintln!("external RTC (rtccmp = {})", rtccmp);
+    rtc.rtccmp.write(|w| w.bits(rtccmp + 65536));
 }
 
 #[entry]

@@ -49,5 +49,21 @@
                 "isDefault": true
             }
         },
+        {
+            "label": "example-interrupt-vextern",
+            "command": "cargo",
+            "args": [
+                "build",
+                "--features=board-redv,v-extern",
+                "--example=interrupt_vextern"
+            ],
+            "problemMatcher": [
+                "$rustc"
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            }
+        },
     ]
 }

@@ -26,7 +26,11 @@ board-hifive1-revb = ["e310x-hal/g002"]
 board-redv = ["e310x-hal/g002"]
 board-lofive = []
 board-lofive-r1 = ["e310x-hal/g002"]
-virq = ["e310x-hal/virq"]
+v-extern = ["e310x-hal/v-extern"]
+
+[[example]]
+name = "interrupt_vextern"
+required-features = ["v-extern"]
 
 [package.metadata.docs.rs]
-features = ['board-hifive1-revb']
+features = ['board-hifive1-revb', 'v-extern']
