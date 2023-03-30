@@ -5,7 +5,7 @@ extern crate panic_halt;
 
 use e310x_hal::{
     core::CorePeripherals,
-    e310x::{Interrupt, Peripherals, Priority, PLIC},
+    e310x::{Interrupt, Peripherals, Priority},
     prelude::*,
     DeviceResources,
 };
