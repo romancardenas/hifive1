@@ -13,7 +13,7 @@ rust-version = "1.59"
 [dependencies]
 e310x-hal = { git = "https://github.com/greenlsi/e310x-hal.git", branch = "master" }
 embedded-hal = "0.2.7"
-riscv = { git = "https://github.com/rust-embedded/riscv.git", branch = "master" }
+riscv = "0.11.1"
 nb = "1.0.0"
 
 [dev-dependencies]
